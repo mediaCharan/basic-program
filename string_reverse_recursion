@@ -1,0 +1,24 @@
+import java.util.Scanner;
+
+public class string_reverse_recursion {
+
+    
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        String st=sc.next();     //"abc"
+        int n=st.length();
+        
+        reverse(st,n-1);
+        sc.close();
+    }
+    public static void reverse(String st,int n){
+        if(n==0){
+            System.out.print(st.charAt(n)+" ");
+            return;
+        }
+        System.out.print(st.charAt(n)+ " ");     //"cba"
+        reverse(st,n-1);
+
+    }
+
+}
