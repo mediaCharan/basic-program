@@ -1,0 +1,17 @@
+public class recursivepow {
+
+    public static void main(String[] args) {
+        int x=2,y=5;
+        pow(x,y-1,x);
+    }
+    private static void pow(int x, int y,int temp) {
+        if(y==0){
+            System.out.println(x);
+            return;
+        }
+        x=temp*x;
+        System.out.println(x);
+        pow(x,y-1,temp);
+    }
+    
+}
