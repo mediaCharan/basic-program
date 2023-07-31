@@ -56,6 +56,10 @@ public class basic_tree {
         System.out.println();
         System.out.println("DFS:");
         dfs(root);
+        System.out.println();
+        System.out.println("Remove element:");
+        delete_element(2,root);
+        bfs(root);
         sc.close();
     }
 
@@ -115,8 +119,42 @@ public class basic_tree {
             dfs(root.left);
             dfs(root.right);
         }
-
-
     }
+
+        public static node delete_element(int key,node root) {
+            if (root.data == -1){
+                return root;
+            }
+            if (root.data !=  key){
+                root.left=delete_element(key,root.left);
+                root.right=delete_element(key,root.right);
+                return root;
+            }
+            if (root.left.data == -1 && root.right.data == -1){
+                return new node(-1);
+            }
+            else if (root.left.data == -1){
+                return root.right;
+            }
+            else if (root.right.data == -1){
+                return root.left;
+            }
+            else{
+                node right_min=find_right_min(root.right);
+                root.data=right_min.data;
+                root.right=delete_element(right_min.data, root.right);
+            }
+            return root;
+
+        }
+        public static node find_right_min(node root) {
+            if (root.left.data == -1){
+                return root;
+            }
+            return find_right_min(root.left);
+        }
+
+
+    
 
 }
