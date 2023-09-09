@@ -1,0 +1,66 @@
+import java.util.ArrayList;
+
+class subPrint{
+    public static void main(String[] mediaCharan) {
+        int arr[]={1,2,3,4,5};
+        
+        //subsequence code
+        ArrayList<ArrayList<Integer>> subSequences = new ArrayList<>();
+        getSubsequences(subSequences,new ArrayList<Integer>(),arr,arr.length,0);
+        System.out.println("          Subsequence          ");
+        System.out.println(subSequences);
+        System.out.println();
+        
+        //subsets code
+        ArrayList<ArrayList<Integer>> subSets = new ArrayList<>();
+        getSubsets(subSets,new ArrayList<Integer>(),arr,arr.length,0);
+        System.out.println("          Subset          ");
+        System.out.println(subSets);
+        System.out.println();
+
+        //subarrays code
+        ArrayList<ArrayList<Integer>> subArrays = new ArrayList<>();
+        getSubArrays(subArrays, arr, arr.length);
+        System.out.println("          SubArray          ");
+        System.out.println(subArrays);
+        
+    }
+
+    public static void getSubsequences(ArrayList<ArrayList<Integer>> al, ArrayList<Integer> curr, int[] arr, int n, int index) {
+        if(index == n) {
+            if(curr.size()!=0)  //removing empty list
+            al.add(new ArrayList<>(curr));
+            //System.out.println(curr);
+            return;
+        }
+
+        curr.add(arr[index]);
+        getSubsequences(al,curr,arr,n,index+1); // choosen current element
+        curr.remove(curr.size()-1);
+        getSubsequences(al,curr,arr,n,index+1); // not choosen current element
+    }
+
+    public static void getSubsets(ArrayList<ArrayList<Integer>> al, ArrayList<Integer> curr, int[] arr, int n, int index) {
+        if(index == n) {
+            al.add(new ArrayList<>(curr));
+            //System.out.println(curr);
+            return;
+        }
+
+        curr.add(arr[index]);
+        getSubsets(al,curr,arr,n,index+1); // choosen current element
+        curr.remove(curr.size()-1);
+        getSubsets(al,curr,arr,n,index+1); // not choosen current element
+    }
+
+    public static void getSubArrays(ArrayList<ArrayList<Integer>> al,int[] arr, int n) {
+        ArrayList<Integer> temp = new ArrayList<>();
+        for(int i=0;i<n;i++) {
+            for(int j=i;j<n;j++) {
+                temp.add(arr[j]);
+                al.add(new ArrayList<>(temp));
+            }
+            temp.clear();
+        }
+    }
+}
