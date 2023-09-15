@@ -1,0 +1,274 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+ //here consider 0 th index
+public class create_graph {
+    static Scanner sc=new Scanner(System.in);
+    public static void main(String[] args) {
+        
+        //Adjacent Matrix 
+        System.out.println("ready to enter adjacent matrix");
+        int graph[][]=create_adjacent_matrix();
+        System.out.println("to print adjacent matrix");
+        Print_Adjacent_matrix(graph);
+        System.out.println("print BFS");
+        bfs_adjacent_Matrix(graph, 1);
+        System.out.println("print DFS");
+        dfs_adjacent_matrix(graph, 1);  
+        remove_adjacent_matrix(graph, 2);
+        System.out.println("After deleting node");
+        Print_Adjacent_matrix(graph);
+
+        //Adjacent List
+        System.out.println("ready to enter adjacent List");
+        ArrayList<ArrayList<Integer>> al=create_adjacent_List();
+        System.out.println("print adjacent list");
+        Print_Adjacent_list(al);
+        System.out.println("BFS");
+        bfs_adjacent_List(al,1);
+        System.out.println("print DFS");
+        dfs_adjacent_list(al,1); 
+        remove_adjacent_list(al, 2);
+        System.out.println("After deleting node");
+        Print_Adjacent_list(al);
+
+        
+    }
+    
+   
+    // adjacent list
+
+    static void addEdge(ArrayList<ArrayList<Integer>> am, int s, int d) {
+        am.get(s).add(d);
+        am.get(d).add(s);
+  }
+    public static ArrayList<ArrayList<Integer>> create_adjacent_List(){
+        System.out.println("enter no of vertices");
+        int n=sc.nextInt();
+        //ArrayList to store
+        ArrayList<ArrayList<Integer>> al = new ArrayList<ArrayList<Integer>>(n);
+        for (int i = 0; i < n; i++){
+            //create a ArrayList inside another ArrayList
+            al.add(new ArrayList<Integer>());
+        }
+        for(int i=0;i<n;i++){
+        System.out.println("enter node u");
+        int u=sc.nextInt();
+        System.out.println("enter node v");
+        int v=sc.nextInt();
+        addEdge(al, u, v);
+        }
+        return al;
+    }
+    static void Print_Adjacent_list(ArrayList<ArrayList<Integer>> am) {
+        for (int i = 0; i < am.size(); i++) { //main list length
+          System.out.println("\nVertex " + i + ":");
+          for (int j = 0; j < am.get(i).size(); j++) {  //taking main list to take inside a list
+            if(j!=0) System.out.print("-> ");
+            System.out.print(am.get(i).get(j));
+          }
+          System.out.println();
+        }
+      }
+    public static void bfs_adjacent_List(ArrayList<ArrayList<Integer>> al,int start)
+    {
+        //creating a array that will make
+        //visited node a true so that duplicate 
+        //cannot be print and consider
+        boolean visited[] = new boolean[al.size()];
+        //bfs is used queue to go level order 
+        LinkedList<Integer> queue = new LinkedList<Integer>();
+        //making initial value to be true in visited array
+        visited[start] = true;
+        //adding initial value in the queue linkedList
+        queue.add(start);
+        while (queue.size() != 0) {
+            //removing first indexing value
+            start = queue.poll();
+            //printing value
+            System.out.print(start + " ");
+            // value list to be iterator
+            Iterator<Integer> i = al.get(start).listIterator();
+            while (i.hasNext()) {
+                int n = i.next();
+                if (!visited[n]) {
+                    visited[n] = true;
+                    queue.add(n);
+                }
+            }
+        }
+        }
+
+        public static void dfs_adjacent_list(ArrayList<ArrayList<Integer>> al,int start){
+        int len=al.size();
+        //creating a array that will make
+        //visited node a true so that duplicate 
+        //cannot be print and consider
+        boolean[] visited = new boolean[len];
+         //ffs is used stack to go depth order 
+        ArrayList<Integer> stk = new ArrayList<Integer>();
+        // Print the current node
+        stk.add(start);
+ 
+        // Set current node as visited
+        visited[start] = true;
+ 
+        // For every node of the graph
+        while (!stk.isEmpty()) {
+            int currentVertex = stk.remove(stk.size() - 1);
+            //printing value
+            System.out.print(currentVertex + " ");
+            
+            for (int i : al.get(currentVertex)) {
+                if (!visited[i]) {
+                    stk.add(i);
+                    visited[i] = true;
+                }
+            }
+        }
+    }
+
+    public static void remove_adjacent_list(ArrayList<ArrayList<Integer>> al,int key){
+        //outer ArrayList iteration
+    for(int i=0;i<al.size();i++){
+        //inner ArrayList of every list
+        Iterator<Integer> it = al.get(i).iterator();
+        while(it.hasNext()) {
+            int target=it.next();
+            if(target == key){
+                it.remove();
+            }
+        }
+    }
+    //removing a key value entire list
+    al.remove(key);
+
+   }
+   
+      //adjacent matrix
+
+    public static int[][] create_adjacent_matrix(){
+        System.out.println("enter number of nodes");
+        int n=sc.nextInt();
+        System.out.println("enter number of edges");
+        int m=sc.nextInt();
+    int[][] graph = new int[n+1][n+1];
+        for(int i=0;i<m;i++){
+            System.out.println("enter node u");
+            int u=sc.nextInt();
+            System.out.println("enter node v");
+            int v=sc.nextInt();
+            graph[u][v] = 1;
+            graph[v][u] = 1;
+            }
+            return graph;
+
+    }
+    public static void Print_Adjacent_matrix(int mat[][]){
+        //printing 2-d matrix
+        for(int i=0;i<=mat.length-1;i++){
+            for(int j=0;j<=mat.length-1;j++){
+                System.out.print(mat[i][j]+" ");
+            }
+            System.out.println();
+        }
+
+    }
+    public static void bfs_adjacent_Matrix(int[][] mat,int start)
+    {
+        int v=mat.length;
+        //creating a array that will make
+        //visited node a true so that duplicate 
+        //cannot be print and consider
+        boolean[] visited = new boolean[v];
+        
+        Arrays.fill(visited, false);
+        //bfs is used queue to go level order 
+        Queue<Integer> q = new LinkedList<>();
+         //adding initial value in the queue linkedList
+        q.add(start);
+ 
+        // Set source as visited
+         //making initial value to be true in visited array
+        visited[start] = true;
+        
+ 
+        int vis;
+        while (!q.isEmpty())
+        {
+             //removing first indexing value
+            vis = q.poll();
+             //printing value
+            System.out.print(vis + " ");
+            // value list to be iterator
+            for(int i = 0; i < v; i++)
+            {
+                if (mat[vis][i] == 1 && (!visited[i]))
+                {
+                    q.add(i);
+                    visited[i] = true;
+                }
+            }
+        }
+}
+    static void dfs_adjacent_matrix(int[][] mat,int start)
+    {
+        //creating a array that will make
+        //visited node a true so that duplicate 
+        //cannot be print and consider
+        boolean[] visited = new boolean[mat.length];
+         //dfs is used stack to go depth order 
+        ArrayList<Integer> stk = new ArrayList<Integer>();
+        // Print the current node
+        stk.add(start);
+ 
+        // Set current node as visited
+        visited[start] = true;
+ 
+        // For every node of the graph
+        while (!stk.isEmpty()) {
+            int currentVertex = stk.remove(stk.size() - 1);
+            //printing 
+            System.out.print(currentVertex + " ");
+            
+            for (int i = 0; i < mat.length; i++) {
+                if (mat[currentVertex][i] == 1 && !visited[i]) {
+                    stk.add(i);
+                    visited[i] = true;
+                }
+            }
+        }
+    } 
+     public static void remove_adjacent_matrix(int[][] mat,int key){
+        int n=mat.length;
+        System.out.println(n);
+        if (key > n) {
+            System.out.println("Vertex not present!");
+            return;
+        }
+        else {
+            int i;
+     
+            // removing the vertex
+
+     
+                // shifting the rows to upside
+                for (i = key+1; i < n; ++i) {
+                    for(int j=0;j<n;j++) {
+                        mat[i-1][j] = mat[i][j];
+                    }
+                }
+     
+                // shifting the columns left ide
+                for (i = key+1; i < n; ++i) {
+                    for(int j=0;j<n;j++) {
+                        mat[j][i-1] = mat[j][i];
+                    }
+                }
+        }
+    }
+}
