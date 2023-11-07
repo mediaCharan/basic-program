@@ -1,0 +1,256 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+class Max_Heap{
+    static ArrayList<Integer> heap;
+    static int index;
+    Max_Heap(){
+        heap=new ArrayList<>();
+        index=-1;
+    }
+    public static void swap(ArrayList<Integer> heap,int a,int b){
+        int temp=heap.get(a);
+        heap.set(a,heap.get(b));
+        heap.set(b,temp);
+    }
+    public static void printAll(){
+        for (int i = 0; i < heap.size(); i++) {
+        System.out.print(heap.get(i)+" ");
+        }
+        System.out.println();
+    }
+
+    public static void add(int data){
+        heap.add(data);
+        index++;
+        int temp=index;
+        while((index > 0) && (heap.get((index-1)/2) < heap.get(index) ) ){
+            swap(heap, (index-1)/2, index);
+            index = (index - 1)/2 ;
+        }
+        index = temp;
+    }
+    public static int top(){
+        if(heap.size() == 0){
+            return -1;
+        }
+        else{
+            return heap.get(0);
+        }
+    }
+
+    public static void delete(){
+        heap.set(0,heap.get(index));
+        heap.remove(index);
+        index--;
+        int n=heap.size();
+        int id=0;
+        while(id < n  && ((2*(id)+1)< n)){
+            if(2*id+2 >= n) {
+                if(heap.get(2*(id)+1) > heap.get(id) ) {
+                    swap(heap, 2*(id)+1, id);
+                    id=2*(id)+1;
+                }
+                else break;
+            }
+            else if(heap.get(2*(id)+1) > heap.get(id)  || heap.get(2*(id)+2) > heap.get(id) ){
+                int left=heap.get(2*(id)+1);
+                int right=heap.get(2*(id)+2);
+                int del=heap.get(id);
+                if(left > del && right > del ){
+                    if(left >= right){
+                        swap(heap, 2*(id)+1, id);
+                        id=2*(id)+1;
+                    }
+                    else{
+                        swap(heap, 2*(id)+2, id);
+                        id=2*(id)+2;
+                    }
+                }
+                else if(right > del){
+                    swap(heap, 2*(id)+2, id);
+                    id=2*(id)+2;
+                }
+                else {
+                    swap(heap, 2*(id)+1, id);
+                    id=2*(id)+1; 
+                }  
+            }
+            else break; 
+        }
+
+    }
+}
+
+class Min_Heap{
+    static ArrayList<Integer> heap;
+    static int index;
+    Min_Heap(){
+        heap=new ArrayList<>();
+        index=-1;
+    }
+    public static void swap(ArrayList<Integer> heap,int a,int b){
+        int temp=heap.get(a);
+        heap.set(a,heap.get(b));
+        heap.set(b,temp);
+    }
+    public static void printAll(){
+        for (int i = 0; i < heap.size(); i++) {
+        System.out.print(heap.get(i)+" ");
+        }
+        System.out.println();
+    }
+
+    public static void add(int data){
+        heap.add(data);
+        index++;
+        int temp=index;
+        while((index > 0) && (heap.get((index-1)/2) > heap.get(index) ) ){
+            swap(heap, (index-1)/2, index);
+            index = (index - 1)/2 ;
+        }
+        index = temp;
+    }
+    public static int top(){
+        if(heap.size() == 0){
+            return -1;
+        }
+        else{
+            return heap.get(0);
+        }
+    }
+
+    public static void delete(){
+        heap.set(0,heap.get(index));
+        heap.remove(index);
+        index--;
+        int n=heap.size();
+        int id=0;
+        while(id < n  && ((2*(id)+1)< n)){
+            if(2*id+2 >= n) {
+                if(heap.get(2*(id)+1) < heap.get(id) ) {
+                    swap(heap, 2*(id)+1, id);
+                    id=2*(id)+1;
+                }
+                else break;
+            }
+            else if(heap.get(2*(id)+1) < heap.get(id)  || heap.get(2*(id)+2) < heap.get(id) ){
+                int left=heap.get(2*(id)+1);
+                int right=heap.get(2*(id)+2);
+                int del=heap.get(id);
+                if(left < del && right < del ){
+                    if(left <= right){
+                        swap(heap, 2*(id)+1, id);
+                        id=2*(id)+1;
+                    }
+                    else{
+                        swap(heap, 2*(id)+2, id);
+                        id=2*(id)+2;
+                    }
+                }
+                else if(right < del){
+                    swap(heap, 2*(id)+2, id);
+                    id=2*(id)+2;
+                }
+                else {
+                    swap(heap, 2*(id)+1, id);
+                    id=2*(id)+1; 
+                }  
+            }
+            else break; 
+        }
+
+    }
+}
+
+
+class Heap{
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        Min_Heap minHeap=new Min_Heap();
+        Max_Heap maxHeap=new Max_Heap();
+        System.out.print("choose Min heap = 1 and Max heap = 2   ");
+        int check=sc.nextInt();
+        switch (check) {
+            case 1:
+                System.out.println("enter min heap length =  ");
+                int n=sc.nextInt();
+                for (int i = 0; i < n; i++) {
+                int val=sc.nextInt();
+                minHeap.add(val);
+                }
+                minHeap.printAll();
+                System.out.println("minimum element is deleting");
+                minHeap.delete();
+                System.out.println("printing");
+                minHeap.printAll();
+                System.out.println("top printing");
+                System.out.println(minHeap.top());
+                System.out.println("printing");
+                minHeap.printAll();  
+                break;
+            case 2:
+                
+                System.out.print("enter max heap length =  ");
+                System.out.println();
+                int no=sc.nextInt();
+                for (int i = 0; i < no; i++) {
+                    int val=sc.nextInt();
+                    maxHeap.add(val);
+                }
+                maxHeap.printAll();
+                System.out.println("maximum element is deleting");
+                maxHeap.delete();
+                System.out.println("printing");
+                maxHeap.printAll();
+                System.out.println("top printing");
+                System.out.println(maxHeap.top());
+                System.out.println("printing");
+                maxHeap.printAll();
+                    
+                break;
+        
+            default:
+                System.out.println("enter valid value");
+                break;
+        }
+         /* Min_Heap heap=new Min_Heap();
+        System.out.println("enter length =  ");
+        int n=sc.nextInt();
+        for (int i = 0; i < n; i++) {
+            int val=sc.nextInt();
+            heap.add(val);
+        }
+        heap.printAll();
+        System.out.println("element to deleting");
+        heap.delete();
+        System.out.println("printing");
+        heap.printAll();
+        System.out.println("top printing");
+        System.out.println(heap.top());
+        System.out.println("printing");
+        heap.printAll();  
+
+
+
+        Max_Heap maxHeap=new Max_Heap();
+        System.out.print("enter length =  ");
+        System.out.println();
+        int n=sc.nextInt();
+        for (int i = 0; i < n; i++) {
+            int val=sc.nextInt();
+            maxHeap.add(val);
+        }
+        maxHeap.printAll();
+        System.out.println("element to deleting");
+        maxHeap.delete();
+        System.out.println("printing");
+        maxHeap.printAll();
+        System.out.println("top printing");
+        System.out.println(maxHeap.top());
+        System.out.println("printing");
+        maxHeap.printAll();  */
+        sc.close();
+
+}
+
+}
